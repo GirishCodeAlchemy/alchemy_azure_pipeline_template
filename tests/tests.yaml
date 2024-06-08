@@ -1,0 +1,21 @@
+parameters:
+  - name: package
+    type: string
+  - name: testFolder
+    type: string
+  - name: testCategory 
+    type: string
+  - name: envHome 
+    type: string
+    default: ''
+
+steps:
+  - scripts: |
+      pip install pytest coverage
+    displayName: Install pytest coverage
+  - script: |
+      coverage run -m --parallel-mode pytest $(Pipeline.Workspace)/${{parameters.package}}/${{parameters.testFolder}}
+    env:
+      ENV_HOME: ${{parameters.envHome}}
+    displayName: Run ${{parameters.testCategory}} with coverage
+    

@@ -1,0 +1,16 @@
+parameters:
+  - name: PYTHON_VERSION
+    type: string
+    default: '3.10'
+    values:
+    - '3.8'
+    - '3.9'
+    - '3.10'
+
+steps:
+  - task: UsePythonVersion@0
+    displayName: Use Python ${{ parameters.PYTHON_VERSION }}
+    inputs:
+      versionSpec: ${{ parameters.PYTHON_VERSION }}
+      addToPath: true
+      architecture: 'x64'

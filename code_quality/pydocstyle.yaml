@@ -1,0 +1,30 @@
+parameters:
+  - name: SOURCE_FOLDER
+    type: string
+    default: '.'
+  - name: PYTHON_VERSION
+    type: string
+    default: '3.10'
+  - name: PYDOC_ARGS 
+    type: string
+    default: '<not_set>'
+
+steps:
+  - task: UsePythonVersion@0
+    displayName: Use Python ${{ parameters.PYTHON_VERSION }}
+    inputs:
+      versionSpec: ${{ parameters.PYTHON_VERSION }}
+      addToPath: false  # Do not add Python to the PATH environment variable
+    name: pyTools
+
+  - ${{ if eq(parameters.PYDOC_ARGS, '<not_set>') )):  # Check if black arguments parameter is not set
+    - bash: |
+        pip install pydocstyle
+        pydocstyle ${{ parameters.SOURCE_FOLDER }}
+      displayName: Run pydocstyle
+    # This step runs black with arguments if provided
+  - ${{if ne(paraseters.PYDOC_ARGS, '<not_set>') )):  # Check if black arguments parameter is set
+      - bash:  |
+        pip install pydocstyle
+        pydocstyle ${{ parameters.PYDOC_ARGS }} ${{ parameters.SOURCE_FOLDER }}
+      displayName: Run pydocstyle with args

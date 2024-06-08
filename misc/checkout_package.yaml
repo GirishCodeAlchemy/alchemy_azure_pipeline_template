@@ -1,0 +1,10 @@
+parameters:
+  - name: package
+    type: string
+
+steps:
+  - checkout: self
+    path: ${{parameters.package}}
+    clean: true
+    fetchDepth: 0
+    persistCredentials: true

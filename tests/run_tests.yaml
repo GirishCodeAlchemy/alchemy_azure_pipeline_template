@@ -1,0 +1,10 @@
+parameters:
+  - name: test_folder
+    type: string
+  - name: pytest_args
+    type: string
+    default: ''
+
+steps:
+  - scripts: tox -e $(tox.env) -- ${{ parameters.pytest_args }} ${{ parameters.test_folder }}
+    displayName: "${{ parameter.test_folder }}"

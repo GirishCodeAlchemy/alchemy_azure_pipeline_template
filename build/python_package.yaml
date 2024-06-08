@@ -1,0 +1,38 @@
+jobs:
+  - job: BuildPackage
+    displayName: 'Build Package'
+    steps:
+      - checkout: self
+        clean: true
+        persistCredentials: true
+      - script: |
+          git fetch --all --tags
+          git switch $(basename $(Build.SourceBranch))
+          git log | head -n 5
+      - script: |
+          pip install build twine wheel
+          python -m build
+      - task: PublishBuildArtifact@1
+        displayName: 'Publish Package'
+        inputs:
+          pathToPublish: './dist/'
+          artifactName: 'package'
+
+  - job: UploadWheel
+    dependsOn: BuildPackage
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+    displayName: Upload Wheel
+    steps:
+      - task: DownloadBuildArtifacts@1
+        inputs:
+          artifactName: 'package'
+          downloadPath: './dist/'
+      - task: GitHubRelease@1
+        inputs:
+          gitHubConnection: alchemy-azure-devops
+          repositoryName: $(REPOSITORY_NAME)
+          action: edit
+          target: $(Build.SourceVersion)
+          tag: $(Build.SourceBranchName)
+          assets: ./dist/package/*.whl
+          assetUploadMode: replace

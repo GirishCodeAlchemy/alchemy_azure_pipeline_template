@@ -1,0 +1,19 @@
+steps:
+  - task: UsePythonVersion@0
+    displayName: Use Python
+    inputs:
+      versionSpec: '3.9'
+      addToPath: false
+    name: pyTools
+
+  - script: pip install --upgrade tox pytest
+    displayName: Install Tox
+
+  - task: UsePythonVersion@0
+    displayName: Test Python $(pythonVersion)
+    inputs:
+      versionSpec: '${python.version}'
+      architecture: 'x64'
+
+  - script: tox --notest -e $(tox.env)
+    displayName: Build tox env

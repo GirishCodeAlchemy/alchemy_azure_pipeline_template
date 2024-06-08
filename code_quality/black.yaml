@@ -1,0 +1,32 @@
+# This code defines a workflow that uses a Python virtual environment to run black on a codebase
+
+parameters:
+  - name: SOURCE_FOLDER
+    type: string
+    default: '.'
+  - name: PYTHON_VERSION
+    type: string
+    default: '3.10'
+  - name: BLACK_ARGS 
+    type: string
+    default: '<not_set>'
+
+steps:
+  - task: UsePythonVersion@0  # Task to use a specific Python version
+    displayName: Use Python ${{ parameters.PYTHON_VERSION }}  # Display name for the task
+    inputs:  # Input parameters for the task
+      versionSpec: ${{ parameters.PYTHON_VERSION }}  # Specifying the Python version
+      addToPath: false  # Do not add Python to the PATH environment variable
+    name: pyTools
+
+  - ${{ if eq(parameters.BLACK_ARGS, '<not_set>') )):  # Check if black arguments parameter is not set
+    - bash: |
+        pip install black
+        black --diff --check --line-length 88 ${{ parameters.SOURCE_FOLDER }}
+      displayName: Run black
+    # This step runs black with arguments if provided
+  - ${{if ne(paraseters.BLACK_ARGS, '<not_set>') )):  # Check if black arguments parameter is set
+      - bash:  |
+        pip install black
+        black ${{ parameters.BLACK_ARGS }} ${{ parameters.SOURCE_FOLDER }}
+      displayName: Run black with args

@@ -1,0 +1,35 @@
+parameters:
+  - name: sonarQube
+    type: string
+  - name: cliProjectKey
+    type: string
+  - name: sonarqubePythonVersion
+    type: string
+    default: '3.10'
+
+
+steps:
+  - script: |
+      coverage combine
+    condition: and(succeeded(), eq(variables.pythonVersion, '${{parameters.sonarqubePythonVersion}}'))
+    displayName: combine test coverages
+  - script: |
+      coverage xml -i
+    condition: and(succeeded(), eq(variables.pythonVersion, '${{parameters.sonarqubePythonVersion}}'))
+    displayName: create coverage report
+  - task: SonarQubePrepare@5
+    condition: and(succeeded(), eq(variables.pythonVersion, '${{parameters.sonarqubePythonVersion}}'))
+    inputs:
+      SonarQube: ${{parameters.sonarqube}}
+      scannerMode: CLI
+      configMode: manual
+      cliProjectKey: ${{parameters.cliProjectKey}}
+      extraProperties: |
+        sonar.python.coverage.reportPaths=coverage.xml
+        sonar.exclusions=**/tests/**
+  - task: SonarQubeAnalyze@5
+    condition: and(succeeded(), eq(variables.pythonVersion, '${{parameters.sonarqubePythonVersion}}'))
+  - task: SonarQubePublish@5
+    condition: and(succeeded(), eq(variables.pythonVersion, '${{parameters.sonarqubePythonVersion}}'))
+    inputs:
+      pollingTimeoutSec: '300'
