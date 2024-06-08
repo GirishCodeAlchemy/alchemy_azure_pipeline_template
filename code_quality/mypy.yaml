@@ -17,13 +17,13 @@ steps:
       addToPath: false  # Do not add Python to the PATH environment variable
     name: pyTools
 
-  - ${{ if eq(parameters.MYPY_ARGS, '<not_set>') }}:  # Check if black arguments parameter is not set
+  - ${{ if eq(parameters.MYPY_ARGS, '<not_set>') }}:
     - bash: |
         pip install mypy
         mypy ${{ parameters.SOURCE_FOLDER }}
-      displayName: Run pydocstyle
+      displayName: Run Mypy
     # This step runs black with arguments if provided
-  - ${{if ne(paraseters.MYPY_ARGS, '<not_set>') }}:  # Check if black arguments parameter is set
+  - ${{ if ne(parameters.MYPY_ARGS, '<not_set>') }}:
     - bash: |
         pip install mypy
         mypy ${{ parameters.MYPY_ARGS }} ${{ parameters.SOURCE_FOLDER }}

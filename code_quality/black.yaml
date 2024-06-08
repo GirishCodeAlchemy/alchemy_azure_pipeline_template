@@ -25,7 +25,7 @@ steps:
         black --diff --check --line-length 88 ${{ parameters.SOURCE_FOLDER }}
       displayName: Run black
     # This step runs black with arguments if provided
-  - ${{if ne(paraseters.BLACK_ARGS, '<not_set>') }}:
+  - ${{ if ne(parameters.BLACK_ARGS, '<not_set>') }}:
     - bash: |
         pip install black
         black ${{ parameters.BLACK_ARGS }} ${{ parameters.SOURCE_FOLDER }}
