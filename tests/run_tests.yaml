@@ -6,5 +6,5 @@ parameters:
     default: ''
 
 steps:
-  - scripts: tox -e $(tox.env) -- ${{ parameters.pytest_args }} ${{ parameters.test_folder }}
+  - script: tox -e $(tox.env) -- ${{ parameters.pytest_args }} ${{ parameters.test_folder }}
     displayName: "${{ parameter.test_folder }}"

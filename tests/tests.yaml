@@ -10,7 +10,7 @@ parameters:
     default: ''
 
 steps:
-  - scripts: |
+  - script: |
       pip install pytest coverage
     displayName: Install pytest coverage
   - script: |
