@@ -24,7 +24,7 @@ steps:
       displayName: Run pydocstyle
     # This step runs black with arguments if provided
   - ${{if ne(paraseters.MYPY_ARGS, '<not_set>') }}:  # Check if black arguments parameter is set
-      - bash:  |
+    - bash: |
         pip install mypy
         mypy ${{ parameters.MYPY_ARGS }} ${{ parameters.SOURCE_FOLDER }}
       displayName: Run mypy with args

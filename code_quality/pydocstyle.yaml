@@ -24,7 +24,7 @@ steps:
       displayName: Run pydocstyle
     # This step runs black with arguments if provided
   - ${{if ne(paraseters.PYDOC_ARGS, '<not_set>') }}:  # Check if black arguments parameter is set
-      - bash:  |
+    - bash: |
         pip install pydocstyle
         pydocstyle ${{ parameters.PYDOC_ARGS }} ${{ parameters.SOURCE_FOLDER }}
       displayName: Run pydocstyle with args
