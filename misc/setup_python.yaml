@@ -1,6 +1,3 @@
-parameters:
-  - name: pythonVersion
-    type: string
 steps:
   - task: UsePythonVersion@0
     displayName: Use Python $(pythonVersion)
