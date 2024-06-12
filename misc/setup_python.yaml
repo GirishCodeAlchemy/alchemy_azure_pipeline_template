@@ -1,6 +1,9 @@
+parameters:
+  - name: pythonVersion
+    type: string
 steps:
   - task: UsePythonVersion@0
-    displayName: Use Python ${pythonVersion}
+    displayName: Use Python ${parameters.pythonVersion}
     inputs:
-      versionSpec: '${pythonVersion}'
+      versionSpec: '${parameters.pythonVersion}'
       architecture: 'x64'
