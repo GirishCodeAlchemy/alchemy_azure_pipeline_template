@@ -12,7 +12,8 @@ jobs:
       - script: |
           pip install build twine wheel
           python -m build
-      - task: PublishBuildArtifact@1
+      # - task: PublishBuildArtifact@1
+      - task: PublishPipelineArtifact@1
         displayName: 'Publish Package'
         inputs:
           pathToPublish: './dist/'
