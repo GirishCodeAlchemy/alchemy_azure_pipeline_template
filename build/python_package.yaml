@@ -30,7 +30,7 @@ jobs:
           downloadPath: './dist/'
       - task: GitHubRelease@1
         inputs:
-          gitHubConnection: alchemy-azure-devops
+          gitHubConnection: girishcodealchemy
           repositoryName: $(REPOSITORY_NAME)
           action: edit
           target: $(Build.SourceVersion)
